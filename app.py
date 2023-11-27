@@ -2,7 +2,7 @@ from flask import Flask, render_template, request
 from flask_bootstrap import Bootstrap
 import os
 import requests
-from config.config_keys import APIkeys
+from config.config_app import gCloud
 import openai
 import base64
 
@@ -10,8 +10,6 @@ app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'uploads'
 Bootstrap(app)
 
-# Add your OpenAI API key here
-openai.api_key = APIkeys("openAI")
 
 
 # Define routes and logic here
@@ -29,7 +27,7 @@ def index():
             return render_template("confirm_inputs.html", item_to_dispose = string, user_location = "Sunpaulo")
         else:
             return render_template("problem.html", error_message = string)
-
+        
     return render_template('index.html')
     
 def validate_image(image_path):
