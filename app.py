@@ -7,10 +7,6 @@ import openai
 import base64
 
 app = Flask(__name__)
-app.config['UPLOAD_FOLDER'] = 'uploads'
-Bootstrap(app)
-
-
 
 # Define routes and logic here
 @app.route('/', methods=['GET', 'POST'])
