@@ -4,5 +4,5 @@ Flask
 gunicorn
 flask_bootstrap
 openai
-gcloud
+google-cloud-vision
 google-auth
