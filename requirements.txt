@@ -1,6 +1,8 @@
+Flask
+Flask-WTF
+bootstrap-flask
 python-dotenv
 requests
-Flask
 gunicorn
 flask_bootstrap
 openai

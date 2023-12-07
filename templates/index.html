@@ -1,3 +1,5 @@
+{% from 'bootstrap5/form.html' import render_form %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,18 +11,7 @@
 <body>
     <div class="container mt-5">
         <h1 class="mb-4">Trash Disposal Helper</h1>
-        <form method="POST" enctype="multipart/form-data">
-            <div class="mb-3">
-                <label for="image" class="form-label">Upload a Picture of Your Trash:</label>
-                <input class="form-control" type="file" name="image" id="image" required>
-            </div>
-			<div class="form-check">
-				<input type="checkbox" id="enableLocation" class="form-check-input">
-				<label class="form-check-label" for="enableLocation">Enable Geolocation</label>
-			</div>
-			
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
+        {{ render_form(form) }}
     </div>
 	<script>
 		const enableLocationCheckbox = document.getElementById('enableLocation');
