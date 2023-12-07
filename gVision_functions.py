@@ -1,5 +1,6 @@
 from google.cloud import vision
 
+
 def get_main_objects(image_path, max_objects = 5, verbose = False):
     '''
     Gets the main objects in a picture using Google Cloud Vision API

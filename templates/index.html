@@ -5,45 +5,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trash Disposal Helper</title>
+    <title>Dove lo butto?!</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
     <div class="container mt-5">
-        <h1 class="mb-4">Trash Disposal Helper</h1>
+        <h1 class="mb-4">Dove lo butto?</h1>
         {{ render_form(form) }}
     </div>
-	<script>
-		const enableLocationCheckbox = document.getElementById('enableLocation');
-		const identifyItemBtn = document.getElementById('identifyItemBtn');
-
-		enableLocationCheckbox.addEventListener('change', function() {
-			// ... Geolocation code ...
-
-			// Disable the geolocation checkbox after enabling it once
-			this.disabled = true;
-		});
-
-		identifyItemBtn.addEventListener('click', () => {
-			const imageInput = document.getElementById('image');
-
-			if (!imageInput.files || imageInput.files.length === 0) {
-				alert('Please upload an image first.');
-				return;
-			}
-
-			// Use FormData to create a request to send the image to your Flask server
-			const formData = new FormData();
-			formData.append('image', imageInput.files[0]);
-
-			// Send a request to your Flask server to identify the main item
-			fetch('/index', {
-				method: 'POST',
-				body: formData,
-			});
-		});
-
-	</script>
-
 </body>
 </html>

@@ -14,9 +14,7 @@ def get_disposable_item(labels, key, verbose = True):
     for label in labels:
         question += ". " + label.description + "\n"
 
-    print(question)
-
-    client = OpenAI(api_key=key)
+    client = OpenAI(api_key = key)
     response = client.chat.completions.create(
     model="gpt-3.5-turbo-1106",
     response_format={ "type": "json_object" },
