@@ -10,7 +10,6 @@ from app import app
 app.config.from_object('config.LocalConfig')
 app.config['SECRET_KEY'] = secrets.token_urlsafe(16)
 
-
 # Bootstrap-Flask requires this line
 bootstrap = Bootstrap5(app)
 # Flask-WTF requires this line
