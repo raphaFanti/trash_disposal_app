@@ -7,3 +7,4 @@ __pycache__/*
 .env
 config.py
 test.py
+comuni.json

@@ -10,19 +10,13 @@ app = Flask(__name__)
 
 allowed_image_extensions = {'png', 'jpg', 'jpeg', 'gif', 'heic'}
 
-cities = ["Bratislava",
-          "Banská Bystrica",
-          "Prešov",
-          "Považská Bystrica",
-          "Žilina",
-          "Košice",
-          "Ružomberok",
-          "Zvolen",
-          "Poprad"]
+with open("comuni.json", "r") as f:
+    comuni_full = json.load(f)
+comuni = [c["nome"] for c in comuni_full]
 
 @app.route('/_autocomplete', methods=['GET'])
 def autocomplete():
-    return Response(json.dumps(cities), mimetype='application/json')
+    return Response(json.dumps(comuni), mimetype='application/json')
 
 # Define routes and logic here
 @app.route('/', methods=['GET', 'POST'])
