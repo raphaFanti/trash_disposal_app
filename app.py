@@ -5,11 +5,13 @@ from forms import UploadForm
 from werkzeug.utils import secure_filename
 from gVision_functions import get_main_objects
 from gtp_functions import get_disposable_item
+from flask_bootstrap import Bootstrap
 
 app = Flask(__name__)
 
 allowed_image_extensions = {'png', 'jpg', 'jpeg', 'gif', 'heic'}
 
+# Load comuni
 with open("comuni.json", "r") as f:
     comuni_full = json.load(f)
 comuni = [c["nome"] for c in comuni_full]
@@ -41,14 +43,13 @@ def index():
         image_objects = get_main_objects(image_path, max_objects = 5)
 
         # Figues out if there is a disposable object in the image
-        disposable_objects = get_disposable_item(image_objects, key=app.config['OPENAI_KEY'])
-        
+        disposable_object = get_disposable_item(image_objects, key=app.config['OPENAI_KEY'])
         # Deletes image
         #os.remove(image_path)
 
-        if len(disposable_objects) > 0:
-            return render_template("confirm_inputs.html", item_to_dispose=disposable_objects[0])
+        if disposable_object != "I don't know":
+            return render_template("confirm_inputs.html", image_url=image_path, item_to_dispose=disposable_object)
         else:
-            return render_template("problem.html", error_message=disposable_objects[0])
+            return render_template("problem.html", error_message=disposable_object)
         
     return render_template('index.html',  form=form)

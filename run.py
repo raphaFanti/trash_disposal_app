@@ -4,12 +4,13 @@ from flask_wtf import CSRFProtect
 import random
 import string
 import secrets
+from config import Config
 
 from app import app
 
-app.config.from_object('config.LocalConfig')
+app.config.from_object(Config)
+# app.config.from_object('config.LocalConfig')
 app.config['SECRET_KEY'] = secrets.token_urlsafe(16)
-
 # Bootstrap-Flask requires this line
 bootstrap = Bootstrap5(app)
 # Flask-WTF requires this line
