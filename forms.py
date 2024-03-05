@@ -8,5 +8,6 @@ class UploadForm(FlaskForm):
     submit = SubmitField('Invia')
 
 class ConfirmInputForm(FlaskForm):
-    input_field = StringField('Cosa vuoi buttare?', validators=[Length(0, 40)], id = 'input_field')
-    confirm_input = SubmitField('Conferma', id = 'confirm_input')
+    input_field = StringField("Espliciti l'oggetto da buttare:", validators=[Length(0, 40)], id = 'input_field')
+    confirm_input = SubmitField('Conferma oggetto proposto', id = 'confirm_input')
+    confirm_edited_input = SubmitField('Conferma', id = 'confirm_edited_input')
