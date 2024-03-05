@@ -10,8 +10,8 @@
     <script>
         function toggleTextInput() {
             var textInput = document.getElementById("object_change_text");
-            var confirmInputButton = document.getElementById("confirm_input");
-            var wrongInputButton = document.getElementById("wrong_input");
+            var confirmInputButton = document.getElementById("confirm_input_button");
+            var wrongInputButton = document.getElementById("wrong_input_button");
             confirmInputButton.style.display = "none";
             wrongInputButton.style.display = "none";
             textInput.style.display = "block";
@@ -30,7 +30,7 @@
             {{ form.csrf_token }}
             <br>
             {{ form.confirm_input(class="btn btn-primary") }}
-            <button type="button" onclick="toggleTextInput()" class="btn btn-primary" id="wrong_input">Non è l'oggetto giusto</button>
+            <button type="button" onclick="toggleTextInput()" class="btn btn-primary" id="wrong_input_button">Non è l'oggetto giusto</button>
             <div class="form-group" id="object_change_text" style="display: none;">
                 {{ form.input_field.label(class="col-form-label") }}
                 {{ form.input_field(class="form-control") }}

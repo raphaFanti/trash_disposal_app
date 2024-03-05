@@ -63,10 +63,16 @@ def confirm_inputs():
     form = ConfirmInputForm()
 
     if form.validate_on_submit():
-        if form.input_field != "":
+        
+        # User accepted proposed object
+        if "confirm_input" in request.form:
+            print("Confirm input: proposed object accepted by user")
             return redirect(url_for('index'))
+        # User refused proposed object
         else:
-            return render_template("problem.html", error_message="test no change in text")
+            print("Confirm input: proposed object NOT accepted by user")
+            print("Suggested object:", request.form["input_field"])
+            return redirect(url_for('index'))
         
     return render_template("confirm_inputs.html", image_url=session["image_url"], item_to_dispose=session["item_to_dispose"], form=form)
 
