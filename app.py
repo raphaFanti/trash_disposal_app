@@ -51,7 +51,7 @@ def index():
         if disposable_object != "I don't know":
             session['image_url'] = image_path
             session['item_to_dispose'] = disposable_object
-            session['dispose_location'] = form["dispose_location"]
+            session['dispose_location'] = request.form["dispose_location"]
             return redirect(url_for('confirm_inputs'))
         else:
             # ToDo: To be improved
