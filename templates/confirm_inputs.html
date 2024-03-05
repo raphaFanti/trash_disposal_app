@@ -1,12 +1,24 @@
-{% from 'bootstrap5/form.html' import render_form %}
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trash Disposal Helper</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+{% block content %}
+    <h1>Trash Disposal Helper</h1">
+    <h2>Imagine fornita</h2>
+    <img src = "{{ image_url }}" alt="image provided as input" height="300">
+    <h2>Sembra che stai provando di buttare:</h2>
+    <h4>{{ item_to_dispose }}</h4>
+    <form method="POST">
+        {{ form.csrf_token }}
+        <br>
+        {{ form.confirm_input(class="btn btn-primary") }}
+        <button type="button" onclick="toggleTextInput()" class="btn btn-primary" id="wrong_input_button">Non è l'oggetto giusto</button>
+        <div class="form-group" id="object_change_text" style="display: none;">
+            {{ form.input_field.label(class="col-form-label") }}
+            {{ form.input_field(class="form-control") }}
+            <br>
+            {{ form.confirm_edited_input(class="btn btn-primary") }}
+        </div">
+        <br>
+    </form>
+{% endblock %}
+{% block scripts %}
     <script>
         function toggleTextInput() {
             var textInput = document.getElementById("object_change_text");
@@ -17,30 +29,4 @@
             textInput.style.display = "block";
         }
     </script>
-</head>
-<body>
-    <div class="container mt-5">
-        <h1>Trash Disposal Helper</h1">
-        <h2>Imagine fornita</h2>
-        <img src = "{{ image_url }}" alt="image provided as input" height="300">
-        <h2>Sembra che stai provando di buttare:</h2>
-        <h4>{{ item_to_dispose }}</h4>
-        
-        <form method="POST">
-            {{ form.csrf_token }}
-            <br>
-            {{ form.confirm_input(class="btn btn-primary") }}
-            <button type="button" onclick="toggleTextInput()" class="btn btn-primary" id="wrong_input_button">Non è l'oggetto giusto</button>
-            <div class="form-group" id="object_change_text" style="display: none;">
-                {{ form.input_field.label(class="col-form-label") }}
-                {{ form.input_field(class="form-control") }}
-                <br>
-                {{ form.confirm_edited_input(class="btn btn-primary") }}
-            </div">
-            <br>
-
-        </form>
-
-    </div>
-</body>
-</html>
+{% endblock %}

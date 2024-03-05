@@ -23,6 +23,7 @@ def autocomplete():
 # App routes
 @app.route('/', methods=['GET', 'POST'])
 def index():
+    flash("hello!")
     form = UploadForm()
 
     if form.validate_on_submit():
