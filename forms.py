@@ -11,3 +11,8 @@ class ConfirmInputForm(FlaskForm):
     input_field = StringField("Espliciti l'oggetto da buttare:", validators=[Length(0, 40)], id = 'input_field')
     confirm_input = SubmitField('Conferma oggetto proposto', id = 'confirm_input_button')
     confirm_edited_input = SubmitField('Conferma', id = 'confirm_edited_input_button')
+
+class UserFeedbackForm(FlaskForm):
+    input_field = StringField("Dove pensi dovere buttare?", validators=[Length(5, 40)], id = 'input_field')
+    confirm_input = SubmitField('Conferma proposta', id = 'confirm_input_button')
+    confirm_edited_input = SubmitField('Conferma', id = 'confirm_edited_input_button')

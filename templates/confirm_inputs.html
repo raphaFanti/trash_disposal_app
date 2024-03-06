@@ -1,10 +1,12 @@
 {% extends "base.html" %}
 {% block content %}
-    <h1>Trash Disposal Helper</h1">
+    {{ super() }}
     <h2>Imagine fornita</h2>
     <img src = "{{ image_url }}" alt="image provided as input" height="300">
-    <h2>Sembra che stai provando di buttare:</h2>
-    <h4>{{ item_to_dispose }}</h4>
+    <div class="jumbotron">
+        <h2>Sembra che stai provando di buttare:</h2>
+        <h4>{{ item_to_dispose }}</h4>
+    </div>
     <form method="POST">
         {{ form.csrf_token }}
         <br>

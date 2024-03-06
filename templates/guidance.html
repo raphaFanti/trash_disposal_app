@@ -1,8 +1,31 @@
 {% extends "base.html" %}
 {% block content %}
-    <h1 class="mb-4">Dove lo butto?</h1>
-    <h2>ChatGTP consiglia di buttare</h2>
-    {{ where_to_dispose }}
-    <h2>Fonte dell'informazione</h2>
-    <a>fonte xxx</a>
+    {{ super() }}
+    <h2>Consigio di ChatGTP:</h2>
+    <p>{{ disposal_guidance }}</p>
+    <form method="POST">
+        {{ form.csrf_token }}
+        <br>
+        {{ form.confirm_input(class="btn btn-primary") }}
+        <button type="button" onclick="toggleTextInput()" class="btn btn-primary" id="wrong_input_button">Non sono d'accordo</button>
+        <div class="form-group" id="object_change_text" style="display: none;">
+            {{ form.input_field.label(class="col-form-label") }}
+            {{ form.input_field(class="form-control") }}
+            <br>
+            {{ form.confirm_edited_input(class="btn btn-primary") }}
+        </div">
+        <br>
+    </form>
+{% endblock %}
+{% block scripts %}
+    <script>
+        function toggleTextInput() {
+            var textInput = document.getElementById("object_change_text");
+            var confirmInputButton = document.getElementById("confirm_input_button");
+            var wrongInputButton = document.getElementById("wrong_input_button");
+            confirmInputButton.style.display = "none";
+            wrongInputButton.style.display = "none";
+            textInput.style.display = "block";
+        }
+    </script>
 {% endblock %}
