@@ -17,4 +17,5 @@ RUN pip install -r requirements.txt
 EXPOSE 8080
 
 # for production
-CMD exec gunicorn --bind 0.0.0.0:8080 --workers 1 --threads 8 app:run
+#CMD exec gunicorn --bind 0.0.0.0:8080 --workers 1 --threads 8 run:app
+CMD exec python run.py

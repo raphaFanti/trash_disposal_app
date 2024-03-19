@@ -1,4 +1,4 @@
-upload_folder/*
+static/upload_folder/*
 venv/*
 __pycache__/*
 *.pyc
@@ -8,3 +8,5 @@ __pycache__/*
 config.py
 test.py
 comuni.json
+.devcontainer/devcontainer.json
+.github/dependabot.yml

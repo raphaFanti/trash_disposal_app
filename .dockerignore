@@ -3,6 +3,6 @@ README.md
 *.pyc
 *.pyo
 *.pyd
-uploads/*
+static/uploads/*
 venv/*
 __pycache__/*
