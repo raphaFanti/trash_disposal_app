@@ -94,10 +94,6 @@ def confirm_inputs():
 @app.route('/disposal_guidance/<object_to_dispose>/<place>', methods=['GET', 'POST'])
 def disposal_guidance(object_to_dispose = None, place = "Italy"):
     
-    if request.method == "POST":
-        for key, value in request.form.items():
-            print(f"Key: {key}, Value: {value}")
-
     # Sends to index in case no object is supplied
     if object_to_dispose == None:
         flash("Prego fornire una foto del oggetto da butare")
