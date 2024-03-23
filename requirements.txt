@@ -8,3 +8,5 @@ flask_bootstrap
 openai
 google-cloud-vision
 google-auth
+google-cloud-storage
+Pillow

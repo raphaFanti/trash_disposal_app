@@ -3,7 +3,7 @@ import os
 from flask import Flask, render_template, request, redirect, flash, session, url_for, Response
 from forms import UploadForm, ConfirmInputForm, UserFeedbackForm
 from werkzeug.utils import secure_filename
-from gVision_functions import get_main_objects
+from gVision_functions import ImageHandler
 from gtp_functions import set_key_chatGtp, get_disposable_item, get_disposal_guidance
 
 app = Flask(__name__)
@@ -31,25 +31,24 @@ def index():
         extension_allowed = image.filename.rsplit('.', 1)[1].lower() in allowed_image_extensions
 
         if not extension_allowed:
-            flash("File type not supported") #ToDo: implement flash messages printing
+            flash("File type not supported")
             return redirect(url_for('index'))
 
-        # Saves image
+        # Saves image to gcp bucket
         image_path = os.path.join(app.config['UPLOAD_FOLDER'], image.filename)
-        image.save(image_path)
+        img_handler = ImageHandler(image)
+        img_handler.pretreat_image()
+        image_uri = img_handler.upload_image(app.config["UPLOAD_BUCKET"])
         
         # Understands objects in image
-        image_objects = get_main_objects(image_path, max_objects = 5)
+        image_objects = img_handler.get_main_objects(max_objects = 5)
 
         # Figues out if there is a disposable object in the image
         set_key_chatGtp(app.config['OPENAI_KEY'])
         disposable_object = get_disposable_item(image_objects)
-        
-        # ToDo: Manage file deletion / persistence
-        #os.remove(image_path)
 
         if disposable_object != "I don't know":
-            session['image_url'] = image_path
+            session['image_uri'] = image_uri
             session['item_to_dispose'] = disposable_object
             session['dispose_location'] = request.form["dispose_location"]
             return redirect(url_for('confirm_inputs'))
@@ -89,7 +88,7 @@ def confirm_inputs():
                 flash("Prego esplicitare un oggetto da buttare se quello proposto da ChatGPT non è giusto")
                 return redirect(url_for('confirm_inputs'))
         
-    return render_template("confirm_inputs.html", image_url=session["image_url"], item_to_dispose=session["item_to_dispose"], form=form)
+    return render_template("confirm_inputs.html", image_url=session["image_uri"], item_to_dispose=session["item_to_dispose"], form=form)
 
 @app.route('/disposal_guidance/<object_to_dispose>/<place>', methods=['GET', 'POST'])
 def disposal_guidance(object_to_dispose = None, place = "Italy"):
