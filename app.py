@@ -35,7 +35,6 @@ def index():
             return redirect(url_for('index'))
 
         # Saves image to gcp bucket
-        image_path = os.path.join(app.config['UPLOAD_FOLDER'], image.filename)
         img_handler = ImageHandler(image)
         img_handler.pretreat_image()
         image_uri = img_handler.upload_image(app.config["UPLOAD_BUCKET"])
