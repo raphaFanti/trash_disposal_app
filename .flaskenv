@@ -1,0 +1,2 @@
+FLASK_APP=trash_disposal_app.py
+FLASK_ENV=development
