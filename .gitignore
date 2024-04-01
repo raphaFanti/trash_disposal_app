@@ -1,12 +1,12 @@
-static/upload_folder/*
+app/static/upload_folder/*
 venv/*
 __pycache__/*
+app/__pycache__/*
 *.pyc
 *.pyo
 *.pyd
 .env
 config.py
-test.py
 comuni.json
 .devcontainer/devcontainer.json
 .github/dependabot.yml

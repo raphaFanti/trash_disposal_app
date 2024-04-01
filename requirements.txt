@@ -10,3 +10,5 @@ google-cloud-vision
 google-auth
 google-cloud-storage
 Pillow
+Flask-SQLAlchemy
+#psycopg2-binary

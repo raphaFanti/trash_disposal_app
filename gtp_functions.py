@@ -52,4 +52,3 @@ def get_disposal_guidance(object_to_dispose, location):
     ]
     )
     return response.choices[0].message.content
-

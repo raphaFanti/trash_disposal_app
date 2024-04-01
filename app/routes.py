@@ -1,14 +1,10 @@
-import json
-import os
+from app import app
 from flask import Flask, render_template, request, redirect, flash, session, url_for, Response
-from forms import UploadForm, ConfirmInputForm, UserFeedbackForm
-from werkzeug.utils import secure_filename
+from app.forms import UploadForm, ConfirmInputForm, UserFeedbackForm #Investigate
 from gVision_functions import ImageHandler
 from gtp_functions import set_key_chatGtp, get_disposable_item, get_disposal_guidance
-
-app = Flask(__name__)
-
-allowed_image_extensions = {'png', 'jpg', 'jpeg', 'gif', 'heic'}
+import json
+import os
 
 # Comuni autocomplete
 with open("comuni.json", "r") as f:
@@ -28,7 +24,7 @@ def index():
         image = request.files['image']
         
         # Checks whether extension is allowed
-        extension_allowed = image.filename.rsplit('.', 1)[1].lower() in allowed_image_extensions
+        extension_allowed = image.filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_IMAGE_EXTENSIONS']
 
         if not extension_allowed:
             flash("File type not supported")
