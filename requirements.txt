@@ -11,4 +11,5 @@ google-auth
 google-cloud-storage
 Pillow
 Flask-SQLAlchemy
+flask-migrate
 #psycopg2-binary

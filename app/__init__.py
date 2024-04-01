@@ -5,6 +5,7 @@ import secrets
 import os
 from config import Config
 from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
 
 app = Flask(__name__)
 
@@ -24,7 +25,8 @@ gcp_credentials_path = app.config['GOOGLE_API_CREDENTIALS_FILENAME']
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = gcp_credentials_path
 
 # DB connection
-#db = SQLAlchemy(app)
+db = SQLAlchemy(app)
+migrate = Migrate(app, db)
 
 # Import routes
-from app import routes
+from app import routes, models

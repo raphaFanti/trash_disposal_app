@@ -25,7 +25,8 @@ def get_disposable_item(labels):
     messages=[
         {"role": "system", "content": "You are a helpful assistant designed to help users dispose of items in the trash."},
         {"role": "user", "content": question}
-    ]
+    ],
+    max_tokens = 64,
     )
     return response.choices[0].message.content
 
@@ -49,6 +50,8 @@ def get_disposal_guidance(object_to_dispose, location):
     messages=[
         {"role": "system", "content": "You are a helpful assistant designed to help users dispose of items in the trash."},
         {"role": "user", "content": question}
-    ]
+    ],
+    max_tokens = 256,
+    temperature = 0.7,
     )
     return response.choices[0].message.content
