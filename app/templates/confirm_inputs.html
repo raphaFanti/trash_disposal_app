@@ -8,7 +8,7 @@
         <h4>{{ item_to_dispose }}</h4>
     </div>
     <form method="POST">
-        {{ form.csrf_token }}
+        {{ form.hidden_tag() }}
         <br>
         {{ form.confirm_input(class="btn btn-primary") }}
         <button type="button" onclick="toggleTextInput()" class="btn btn-primary" id="wrong_input_button">Non è l'oggetto giusto</button>
