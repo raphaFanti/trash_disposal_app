@@ -1,10 +1,12 @@
-from app import app
-from flask import Flask, render_template, request, redirect, flash, session, url_for, Response
-from app.forms import UploadForm, ConfirmInputForm, UserFeedbackForm #Investigate
-from gVision_functions import ImageHandler
-from gtp_functions import set_key_chatGtp, get_disposable_item, get_disposal_guidance
 import json
-import os
+from datetime import datetime
+from flask import Flask, render_template, request, redirect, flash, session, url_for, Response
+import sqlalchemy as sa
+from app import app, db
+from app.forms import UploadForm, ConfirmInputForm
+from app.gVision_functions import ImageHandler
+from app.gtp_functions import set_key_chatGtp, get_disposable_item, get_disposal_guidance
+from app.models import DisposalRecommendation
 
 # Comuni autocomplete
 with open("comuni.json", "r") as f:
@@ -34,18 +36,37 @@ def index():
         img_handler = ImageHandler(image)
         img_handler.pretreat_image()
         image_uri = img_handler.upload_image(app.config["UPLOAD_BUCKET"])
+        session['image_uri'] = image_uri
+
+        # Creates database entry
+        timestamp = datetime.utcnow()
+        rec = DisposalRecommendation(timestamp = timestamp, bucket = app.config["UPLOAD_BUCKET"], file_uri = image_uri)
+        db.session.add(rec)
+        db.session.commit()
+        query = sa.select(DisposalRecommendation).where(DisposalRecommendation.timestamp == timestamp)
+        rec_id = db.session.scalars(query).first().id
+        if rec_id is not None:
+            session["upload_record_id"] = rec_id
+        else:
+            flash("Problem uploading the picture to database")
+            return redirect(url_for("index"))
         
         # Understands objects in image
         image_objects = img_handler.get_main_objects(max_objects = 5)
+        if len(image_objects) > 0:
+            rec.gVision_labels = json.dumps([label.description for label in image_objects])
+            db.session.commit()
 
         # Figues out if there is a disposable object in the image
         set_key_chatGtp(app.config['OPENAI_KEY'])
         disposable_object = get_disposable_item(image_objects)
 
         if disposable_object != "I don't know":
-            session['image_uri'] = image_uri
             session['item_to_dispose'] = disposable_object
             session['dispose_location'] = request.form["dispose_location"]
+
+            rec.gtp_selected_label = disposable_object
+            db.session.commit()
             return redirect(url_for('confirm_inputs'))
         else:
             # ToDo: To be improved
@@ -73,6 +94,15 @@ def confirm_inputs():
             # User has provided a proposed object
             if proposed_object != "":
                 session["user_proposed_object"] = proposed_object
+
+                rec = db.session.query(DisposalRecommendation).get(session["upload_record_id"])
+                if rec is not None:
+                    rec.label_correction = proposed_object
+                    db.session.add(rec)
+                    db.session.commit()
+                else:
+                    flash("Problem storing connecting to database")
+            
                 return redirect(url_for("disposal_guidance", 
                                     object_to_dispose = proposed_object,
                                     place = session['dispose_location'])
@@ -96,6 +126,13 @@ def disposal_guidance(object_to_dispose = None, place = "Italy"):
     # Gets disposal guidance
     else:
         guidance = get_disposal_guidance(object_to_dispose, place)
+        rec = db.session.query(DisposalRecommendation).get(session["upload_record_id"])
+        if rec is not None:
+            rec.disposal_guidance = guidance
+            db.session.add(rec)
+            db.session.commit()
+        else:
+            flash("Problem connecting to database")
 
     form = ConfirmInputForm()
 
@@ -112,7 +149,14 @@ def disposal_guidance(object_to_dispose = None, place = "Italy"):
             
             # User has provided a proposed object
             if proposed_bin != "":
-                session["user_proposed_bin"] = proposed_bin # need to put this in app log
+                rec = db.session.query(DisposalRecommendation).get(session["upload_record_id"])
+                if rec is not None:
+                    rec.disposal_guidance_correction = proposed_bin
+                    db.session.add(rec)
+                    db.session.commit()
+                else:
+                    flash("Problem connecting to database")
+
                 flash("Grazie del vostro feedback! Investigueremo la vostra proposta.")
                 return redirect(url_for("index"))
 

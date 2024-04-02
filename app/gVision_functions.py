@@ -54,7 +54,6 @@ class ImageHandler():
         now = datetime.utcnow()
         timestamp = now.strftime("%Y%m%d_%H%M%S_%f")
         blob_name = f"image_{timestamp}.jpg"
-        print("blob name:", blob_name)
         blob = bucket.blob(blob_name)
         
         # Upload file to blob
