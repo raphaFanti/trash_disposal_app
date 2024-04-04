@@ -6,6 +6,8 @@ import os
 from config import Config
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from .gcp_db_connector import connect_with_connector
+from sqlalchemy.orm import Session
 
 app = Flask(__name__)
 
@@ -25,7 +27,34 @@ gcp_credentials_path = app.config['GOOGLE_API_CREDENTIALS_FILENAME']
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = gcp_credentials_path
 
 # DB connection
+#gcp_connection = connect_with_connector(app.config["CLOUDSQL_INSTANCE_NAME"], app.config["CLOUDSQL_USER"], app.config["CLOUDSQL_PASSWORD"], app.config["CLOUDSQL_DATABASE"])
+
+'''
+app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
+    'pool': engine,
+    'echo_pool': False
+}
+'''
+
+app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://{db_user}:{db_password}@{host}/{db_name}".format(
+    db_user=CLOUDSQL_USER,
+    db_password=CLOUDSQL_PASSWORD,
+    host=CLOUDSQL_INSTANCE_IP,
+    db_name="postgres"
+)
+
+
 db = SQLAlchemy(app)
+#db.create_engine = gcp_connection.create_engine
+
+#db = SQLAlchemy(app)
+#db.create_engine = gcp_connection.create_engine
+
+
+#db = SQLAlchemy(app)
+#db.create_engine = engine
+
+# Migrate setup
 migrate = Migrate(app, db)
 
 # Import routes

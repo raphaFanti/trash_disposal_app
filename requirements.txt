@@ -12,4 +12,5 @@ google-cloud-storage
 Pillow
 Flask-SQLAlchemy
 flask-migrate
-#psycopg2-binary
+cloud-sql-python-connector[pg8000]
+psycopg2
