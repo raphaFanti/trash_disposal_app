@@ -29,17 +29,10 @@ os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = gcp_credentials_path
 # DB connection
 #gcp_connection = connect_with_connector(app.config["CLOUDSQL_INSTANCE_NAME"], app.config["CLOUDSQL_USER"], app.config["CLOUDSQL_PASSWORD"], app.config["CLOUDSQL_DATABASE"])
 
-'''
-app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
-    'pool': engine,
-    'echo_pool': False
-}
-'''
-
-app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://{db_user}:{db_password}@{host}/{db_name}".format(
-    db_user=CLOUDSQL_USER,
-    db_password=CLOUDSQL_PASSWORD,
-    host=CLOUDSQL_INSTANCE_IP,
+app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql+pg8000://{db_user}:{db_password}@{host}/{db_name}".format(
+    db_user=app.config["CLOUDSQL_USER"],
+    db_password=app.config["CLOUDSQL_PASSWORD"],
+    host=app.config["CLOUDSQL_INSTANCE_IP"],
     db_name="postgres"
 )
 
